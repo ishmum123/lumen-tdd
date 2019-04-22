@@ -57,13 +57,13 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
+// $app->middleware([ 
+//    App\Http\Middleware\ValidJsonGuardMiddleware::class 
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([ 
+    'valid-json' => App\Http\Middleware\ValidJsonGuardMiddleware::class, 
+]);
 
 /*
 |--------------------------------------------------------------------------

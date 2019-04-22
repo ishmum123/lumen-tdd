@@ -11,8 +11,7 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
-
-$router->post('/user', 'UserController@create');
+$router->post('/user', [
+    'middleware' => 'valid-json', 
+    'uses' => 'UserController@create'
+]);

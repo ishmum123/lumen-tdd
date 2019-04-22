@@ -87,4 +87,16 @@ class UserTest extends TestCase
             ]
         ], $response->getContent());
     }
+
+    public function testUnknownUrl()
+    {
+        $this
+            ->get('/non-existent-url')
+            ->seeJsonEquals([ 
+                'error' => [ 
+                    'code' => 404, 
+                    'message' => 'URL Not Found' 
+                ] 
+            ]);
+    }
 }
