@@ -76,4 +76,15 @@ class UserTest extends TestCase
 
 		$this->assertEquals(0, DB::table('users')->count());
     }
+
+    public function testInvalidJson()
+    {
+        $response = $this->call('POST', '/user', [], [], [], [], '{');
+        $this->seeJsonEquals([
+            'error' => [ 
+                'code' => 422,
+                'message' => 'Invalid JSON Structure'
+            ]
+        ], $response->getContent());
+    }
 }

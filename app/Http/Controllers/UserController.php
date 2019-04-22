@@ -10,6 +10,14 @@ class UserController extends Controller
 {
     public function create(Request $request) 
     { 
+        if ($request->all() == null) 
+            return response()->json([
+                'error' => [
+                    'code' => 422,
+                    'message' => 'Invalid JSON Structure'
+                ]
+            ], 422);
+
 		$validation = $this->validateRequest($request);
 
 		if ($validation != null) return $validation;
