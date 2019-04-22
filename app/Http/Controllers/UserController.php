@@ -8,6 +8,11 @@ use \App\Models\User;
 
 class UserController extends Controller
 {
+    public function index(Request $request) 
+    {
+        return User::all();
+    }
+
     public function create(Request $request) 
     { 
 		$validation = $this->validateRequest($request);

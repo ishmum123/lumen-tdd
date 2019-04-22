@@ -15,3 +15,5 @@ $router->post('/user', [
     'middleware' => 'valid-json', 
     'uses' => 'UserController@create'
 ]);
+
+$router->get('/user', 'UserController@index');

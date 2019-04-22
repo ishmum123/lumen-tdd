@@ -3,7 +3,7 @@
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
-// TODO: Test Invalid JSON Request Response should be 422
+// TODO: Handle 405 Method Not Allowed
 class UserTest extends TestCase
 {
     use DatabaseMigrations, DatabaseTransactions;
@@ -22,6 +22,16 @@ class UserTest extends TestCase
             	'username' => 'testuser',
             	'email' => 'test@mail.com'
         	]);
+    }
+
+    public function testUserList()
+    {
+        factory(App\Models\User::class, 'random', 5)->create();
+
+        $this
+			->get('/user')
+			->seeStatusCode(200)
+			->seeJsonCount(5);
     }
 
     public function testBasicDataValidation()
