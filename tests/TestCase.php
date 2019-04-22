@@ -11,4 +11,10 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
     {
         return require __DIR__.'/../bootstrap/app.php';
     }
+
+    protected function seeContent() 
+    {
+        $this->expectOutputString('');
+        return $this;
+    }
 }

@@ -11,9 +11,18 @@
 |
 */
 
-$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+$factory->defineAs(App\Models\User::class, 'random', function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
+        'username' => $faker->name,
         'email' => $faker->email,
+        'password' => app('hash')->make($faker->name),
+    ];
+});
+
+$factory->defineAs(App\Models\User::class, 'defined', function (Faker\Generator $faker) {
+    return [
+        'username' => 'testuser',
+        'email' => 'test@mail.com',
+        'password' => app('hash')->make($faker->name),
     ];
 });
