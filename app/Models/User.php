@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
+use Laravel\Passport\HasApiTokens;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -11,7 +12,7 @@ use App\Models\Traits\UuidHelperTrait;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, UuidHelperTrait;
+    use HasApiTokens, Authenticatable, Authorizable, UuidHelperTrait;
 
     /**
      * The attributes that are mass assignable.
