@@ -23,6 +23,17 @@ $factory->defineAs(App\Models\User::class, 'defined', function (Faker\Generator 
     return [
         'username' => 'testuser',
         'email' => 'test@mail.com',
-        'password' => app('hash')->make($faker->name),
+        'password' => app('hash')->make('asdRFG123'),
+    ];
+});
+
+$factory->defineAs(App\Models\OauthClient::class, 'defined', function (Faker\Generator $faker) {
+    return [
+        'name' => 'testclient',
+        'secret' => 'rRAOa2gevUIoZHPz50DE0Q==',
+        'redirect' => '/non-existent-url',
+        'personal_access_client' => false,
+        'password_client' => true,
+        'revoked' => false,
     ];
 });

@@ -3,10 +3,32 @@
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
-// TODO: Handle 405 Method Not Allowed
 class UserTest extends TestCase
 {
     use DatabaseMigrations, DatabaseTransactions;
+
+    public function testLogin()
+    {
+        factory(App\Models\User::class, 'defined')->create();
+        factory(App\Models\OauthClient::class, 'defined')->create();
+
+        $this
+			->post('/oauth/token', [ 
+                'grant_type'=> 'password', 
+				'scope'=> '*', 
+				'client_id'=> '1', 
+				'client_secret'=> 'rRAOa2gevUIoZHPz50DE0Q==', 
+				'username' => 'test@mail.com', 
+            	'password' => 'asdRFG123'
+        	])
+			->seeStatusCode(200)
+			->seeJsonStructure([ 
+				'token_type' => [], 
+				'expires_in' => [], 
+				'access_token' => [], 
+				'refresh_token' => [], 
+			]);
+    }
 
     public function testRegistration()
     {

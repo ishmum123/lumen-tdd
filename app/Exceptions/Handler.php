@@ -48,11 +48,13 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         $rendered = parent::render($request, $exception); 
-        
-        $message = $exception instanceof NotFoundHttpException ? 'URL Not Found' : 
-            $exception instanceof MethodNotAllowedHttpException ? 'Http Method Not Allowed' : 
-            $exception->getMessage();
 
+        if ($exception instanceof NotFoundHttpException) 
+            $message = 'URL Not Found';
+        elseif ($exception instanceof MethodNotAllowedHttpException) 
+            $message = 'HTTP Method Not Allowed';
+        else $message = $exception->getMessage();
+        
         return response()->json([ 
             'error' => [ 
                 'code' => $rendered->getStatusCode(), 
