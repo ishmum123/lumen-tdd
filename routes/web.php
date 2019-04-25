@@ -16,4 +16,7 @@ $router->post('/user', [
     'uses' => 'UserController@create'
 ]);
 
-$router->get('/user', 'UserController@index');
+$router->get('/user', [
+    'middleware' => 'auth', 
+    'uses' => 'UserController@index'
+]);

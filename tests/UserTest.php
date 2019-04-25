@@ -7,6 +7,22 @@ class UserTest extends TestCase
 {
     use DatabaseMigrations, DatabaseTransactions;
 
+    public function testRegistration()
+    {
+        $this
+			->post('/user', [ 
+				'username' => 'testuser', 
+            	'email' => 'test@mail.com', 
+            	'password' => 'asdRFG123'
+        	])
+			->seeStatusCode(201)
+			->seeContent('')
+    		->seeInDatabase('users', [
+            	'username' => 'testuser',
+            	'email' => 'test@mail.com'
+        	]);
+    }
+
     public function testLogin()
     {
         factory(App\Models\User::class, 'defined')->create();
@@ -30,33 +46,20 @@ class UserTest extends TestCase
 			]);
     }
 
-    public function testRegistration()
-    {
-        $this
-			->post('/user', [ 
-				'username' => 'testuser', 
-            	'email' => 'test@mail.com', 
-            	'password' => 'asdRFG123'
-        	])
-			->seeStatusCode(201)
-			->seeContent('')
-    		->seeInDatabase('users', [
-            	'username' => 'testuser',
-            	'email' => 'test@mail.com'
-        	]);
-    }
-
     public function testUserList()
     {
         factory(App\Models\User::class, 'random', 5)->create();
+        $user = factory(App\Models\User::class, 'defined')->create();
+
+        Laravel\Passport\Passport::actingAs($user);
 
         $this
 			->get('/user')
 			->seeStatusCode(200)
-			->seeJsonCount(5);
+			->seeJsonCount(6);
     }
-
-    public function testBasicDataValidation()
+    
+    public function testBasicValidation()
     {
         $this
 			->post('/user', [ 
@@ -107,28 +110,5 @@ class UserTest extends TestCase
 			->seeStatusCode(400);
 
 		$this->assertEquals(0, DB::table('users')->count());
-    }
-
-    public function testInvalidJson()
-    {
-        $response = $this->call('POST', '/user', [], [], [], [], '{');
-        $this->seeJsonEquals([
-            'error' => [ 
-                'code' => 422,
-                'message' => 'Invalid JSON Structure'
-            ]
-        ], $response->getContent());
-    }
-
-    public function testUnknownUrl()
-    {
-        $this
-            ->get('/non-existent-url')
-            ->seeJsonEquals([ 
-                'error' => [ 
-                    'code' => 404, 
-                    'message' => 'URL Not Found' 
-                ] 
-            ]);
     }
 }

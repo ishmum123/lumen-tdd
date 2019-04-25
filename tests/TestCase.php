@@ -18,9 +18,9 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         return $this;
     }
 
-    protected function seeContent() 
+    protected function seeContent($output) 
     {
-        $this->expectOutputString('');
+		$this->assertEquals($output, $this->response->getContent());
         return $this;
     }
 }
